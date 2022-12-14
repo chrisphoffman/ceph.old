@@ -681,16 +681,16 @@ public:
    * indicating whether the extent exists (1), or is known/defined to
    * be zeros (a hole, 0).  If the source snapshot name is NULL, we
    * interpret that as the beginning of time and return all allocated
-   * regions of the image.  The end version is whatever is currently
-   * selected for the image handle (either a snapshot or the writeable
-   * head).
+   * and discarded regions of the image.  The end version is whatever
+   * is currently selected for the image handle (either a snapshot or
+   * the writeable head).
    *
    * @param fromsnapname start snapshot name, or NULL
    * @param ofs start offset
    * @param len len in bytes of region to report on
    * @param include_parent true if full history diff should include parent
    * @param whole_object 1 if diff extents should cover whole object
-   * @param cb callback to call for each allocated region
+   * @param cb callback to call for each allocated or discarded region
    * @param arg argument to pass to the callback
    * @returns 0 on success, or negative error code on error
    */
