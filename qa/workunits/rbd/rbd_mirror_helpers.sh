@@ -157,7 +157,8 @@ daemon_pid_file()
     local instance
 
     set_cluster_instance "${cluster}" cluster instance
-
+    echo ${PWD}
+    ls ${PWD}
     echo $(ceph-conf --cluster $cluster --name "client.${MIRROR_USER_ID_PREFIX}${instance}" 'pid file')
 }
 
@@ -364,7 +365,7 @@ setup()
 cleanup()
 {
     local error_code=$1
-
+    
     set +e
 
     if [ "${error_code}" -ne 0 ]; then
@@ -1457,6 +1458,33 @@ wait_for_image_in_omap()
     wait_for_omap_keys ${cluster} ${pool} rbd_mirroring status_global
     wait_for_omap_keys ${cluster} ${pool} rbd_mirroring image_
     wait_for_omap_keys ${cluster} ${pool} rbd_mirror_leader image_map
+}
+
+map()
+{
+    local cluster=$1
+    local pool=$2
+    local image=$3
+    local snap=$4
+
+    if [[ -n $snap ]]; then
+      snap="@$snap"
+    fi
+    sudo rbd --cluster $cluster device map $pool/$image$snap
+}
+
+unmap()
+{
+    local cluster=$1
+    local pool=$2
+    local image=$3
+    local snap=$4
+
+    if [[ -n $snap ]]; then
+      snap="@$snap"
+    fi
+
+    sudo ${BIN_PATH}rbd --cluster $cluster device unmap $pool/$image$snap
 }
 
 #
