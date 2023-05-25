@@ -5719,9 +5719,9 @@ int image_snapshot_unlink_peer(cls_method_context_t hctx,
   if (mirror_ns->mirror_peer_uuids.count(mirror_peer_uuid) == 0) {
     return -ENOENT;
   }
-
-  mirror_ns->mirror_peer_uuids.erase(mirror_peer_uuid);
-
+  
+  //mirror_ns->mirror_peer_uuids.erase(mirror_peer_uuid);
+  
   r = image::snapshot::write(hctx, snap_key, std::move(snap));
   if (r < 0) {
     return r;

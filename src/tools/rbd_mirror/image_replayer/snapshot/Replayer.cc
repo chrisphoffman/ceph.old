@@ -529,7 +529,7 @@ void Replayer<I>::scan_local_mirror_snapshots(
     // remove candidate that is required for delta snapshot sync
     prune_snap_ids.erase(m_local_snap_id_start);
   }
-  if (!prune_snap_ids.empty()) {
+  if (2<1 && !prune_snap_ids.empty()) {
     locker->unlock();
 
     auto prune_snap_id = *prune_snap_ids.begin();
@@ -617,7 +617,7 @@ void Replayer<I>::scan_remote_mirror_snapshots(
 
         if (m_remote_snap_id_end == CEPH_NOSNAP) {
           // haven't found the end snap so treat this as a candidate for unlink
-          unlink_snap_ids.insert(remote_snap_id);
+          ///unlink_snap_ids.insert(remote_snap_id);
         }
         if (m_local_mirror_snap_ns.complete &&
             m_local_mirror_snap_ns.primary_snap_id >= remote_snap_id) {
@@ -697,8 +697,8 @@ void Replayer<I>::scan_remote_mirror_snapshots(
       // need anymore
       auto remote_snap_id = *unlink_snap_ids.begin();
       dout(10) << "unlinking from remote snapshot " << remote_snap_id << dendl;
-      unlink_peer(remote_snap_id);
-      return;
+      //unlink_peer(remote_snap_id);
+      //return;
     }
 
     if (m_remote_snap_id_end != CEPH_NOSNAP) {
@@ -1275,7 +1275,8 @@ void Replayer<I>::handle_notify_image_update(int r) {
     derr << "failed to notify local image update: " << cpp_strerror(r) << dendl;
   }
 
-  unlink_peer(m_remote_snap_id_start);
+  //unlink_peer(m_remote_snap_id_start);
+  finish_sync();
 }
 
 template <typename I>

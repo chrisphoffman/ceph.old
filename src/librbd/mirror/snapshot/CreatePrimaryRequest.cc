@@ -180,7 +180,6 @@ void CreatePrimaryRequest<I>::unlink_peer() {
   uint64_t max_snapshots = m_image_ctx->config.template get_val<uint64_t>(
     "rbd_mirroring_max_mirroring_snapshots");
   ceph_assert(max_snapshots >= 3);
-
   std::string peer_uuid;
   uint64_t snap_id = CEPH_NOSNAP;
 
