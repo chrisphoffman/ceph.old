@@ -174,6 +174,23 @@ wait_for_status_in_pool_dir ${CLUSTER2} ${POOL} ${image} 'up+stopped'
 wait_for_status_in_pool_dir ${CLUSTER1} ${POOL} ${image} 'up+replaying'
 compare_images ${POOL} ${image}
 
+# failover and failback. verify demote snap is deleted
+testlog "TEST: demote image, promote image, test replay"
+prefix="\".mirror.primary."
+state="\"demoted\""
+demote_image ${CLUSTER2} ${POOL} ${image}
+wait_for_image_replay_stopped ${CLUSTER1} ${POOL} ${image}
+id=$(get_snap_id ${CLUSTER2} ${POOL} ${image} ${prefix} "${state}")
+promote_image ${CLUSTER1} ${POOL} ${image}
+wait_for_image_replay_stopped ${CLUSTER2} ${POOL} ${image}
+demote_image ${CLUSTER1} ${POOL} ${image}
+wait_for_image_replay_stopped ${CLUSTER2} ${POOL} ${image}
+promote_image ${CLUSTER2} ${POOL} ${image}
+wait_for_image_replay_stopped ${CLUSTER1} ${POOL} ${image}
+demote_image ${CLUSTER2} ${POOL} ${image}
+wait_for_image_replay_stopped ${CLUSTER1} ${POOL} ${image}
+get_snap_id_fail ${CLUSTER2} ${POOL} ${image} ${prefix} "${state}" ${id}
+
 # failover (unmodified)
 demote_image ${CLUSTER2} ${POOL} ${image}
 wait_for_image_replay_stopped ${CLUSTER1} ${POOL} ${image}

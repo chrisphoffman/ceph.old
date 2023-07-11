@@ -1407,6 +1407,52 @@ get_clone_format()
              }'
 }
 
+get_snap_id()
+{
+  local cluster=$1
+  local pool=$2
+  local image=$3
+  local prefix=$4
+  local needle_state=$5
+
+  OUTPUT=$(rbd --cluster $cluster snap ls --all $pool/$image --format json)
+  ids=( $(echo $OUTPUT | jq '.[].id') )
+  names=( $(echo $OUTPUT | jq '.[].name') )
+  states=( $(echo $OUTPUT | jq '.[].namespace.state') )
+
+  ID=0
+
+  for i in "${!ids[@]}";
+  do
+        id=${ids[$i]}
+	name=${names[$i]}
+	state=${states[$i]}
+
+	if [ $state == "$needle_state" ] ; then
+	  if [[ $name == "$prefix"* ]] ; then
+	    ID=$id
+            break
+          fi
+	fi
+  done
+
+  echo ${ID}
+}
+
+get_snap_id_fail()
+{
+  local cluster=$1
+  local pool=$2
+  local image=$3
+  local prefix=$4
+  local needle_state=$5
+  local needle_id=$6
+
+  id=$(get_snap_id $cluster $pool $image $prefix $needle_state)
+
+  [[ $id != $needle_id ]] 
+}
+
 list_omap_keys()
 {
     local cluster=$1
