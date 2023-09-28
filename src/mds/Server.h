@@ -231,7 +231,6 @@ public:
                           std::string value,
                           file_layout_t *layout);
   void handle_set_vxattr(MDRequestRef& mdr, CInode *cur);
-  void handle_remove_vxattr(MDRequestRef& mdr, CInode *cur);
   void handle_client_getvxattr(MDRequestRef& mdr);
   void handle_client_setxattr(MDRequestRef& mdr);
   void handle_client_removexattr(MDRequestRef& mdr);
