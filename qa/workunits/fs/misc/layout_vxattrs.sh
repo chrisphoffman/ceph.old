@@ -105,6 +105,21 @@ getfattr -n ceph.file.layout.stripe_count dir/file | grep -q 8
 getfattr -n ceph.file.layout.object_size dir/file | grep -q 10485760
 getfattr -n ceph.file.layout.pool_namespace dir/file | grep -q dirns
 
+setfattr -x ceph.dir.layout.pool dir 2>&1 && exit 0 | grep "setfattr: dir: Invalid argument"
+setfattr -x ceph.dir.layout.pool_id dir 2>&1 && exit 0 | grep "setfattr: dir: Invalid argument"
+setfattr -x ceph.dir.layout.pool_name dir 2>&1 && exit 0 | grep "setfattr: dir: Invalid argument"
+setfattr -x ceph.dir.layout.stripe_unit dir 2>&1 && exit 0 | grep "setfattr: dir: Invalid argument"
+setfattr -x ceph.dir.layout.stripe_count dir 2>&1 && exit 0 | grep "setfattr: dir: Invalid argument"
+setfattr -x ceph.dir.layout.object_size dir 2>&1 && exit 0 | grep "setfattr: dir: Invalid argument"
+
+setfattr -x ceph.file.layout.pool dir/file 2>&1 && exit 0 | grep "setfattr: dir/file: Invalid argument"
+setfattr -x ceph.file.layout.pool_id dir/file 2>&1 && exit 0 | grep "setfattr: dir/file: Invalid argument"
+setfattr -x ceph.file.layout.pool_name dir/file 2>&1 && exit 0 | grep "setfattr: dir/file: Invalid argument"
+setfattr -x ceph.file.layout.stripe_unit dir/file 2>&1 && exit 0 | grep "setfattr: dir/file: Invalid argument"
+setfattr -x ceph.file.layout.stripe_count dir/file 2>&1 && exit 0 | grep "setfattr: dir/file: Invalid argument"
+setfattr -x ceph.file.layout.object_size dir/file 2>&1 && exit 0 | grep "setfattr: dir/file: Invalid argument"
+setfattr -x ceph.file.layout.pool_namespace dir/file
+
 setfattr -x ceph.dir.layout.pool_namespace dir
 getfattr -n ceph.dir.layout dir | grep -q -v pool_namespace=dirns
 
