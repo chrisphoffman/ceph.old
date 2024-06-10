@@ -269,3 +269,17 @@ other daemons, please see :ref:`health-checks`.
 
     To evict and permanently block broken clients from connecting to the
     cluster, set the ``required_client_feature`` bit ``client_mds_auth_caps``.
+
+``MDS_XATTR_SELINUX``
+---------------------------------
+  Message
+    "X MDS report excessive selinux setxattr events"
+
+  Description
+    A selinux relabel of a large fileset can cause high load on mds metadata. This operation
+    changes values of "security.selinux" via setxattr on selinux enabled inodes. This can be
+    seen through reduced performance on other clients.
+    
+    The health warning MDS_XATTR_SELINUX is introduced to warn when a threshold
+    ``mds_log_max_setxattr_selinux`` is reached. This threshold is measured in setxattr ops per
+    second.
